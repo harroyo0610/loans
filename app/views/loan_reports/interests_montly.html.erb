@@ -46,7 +46,7 @@
           </td>
           <td>
             <%= link_to edit_loan_path(l[:id]), class: 'nav-link' do %>
-              <%= l[:interest] %>
+              <%= number_to_currency(l[:interest], precision: 2) %>
             <% end %>
           </td>
         </tr>

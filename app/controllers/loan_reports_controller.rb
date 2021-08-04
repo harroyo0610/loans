@@ -87,20 +87,19 @@ class LoanReportsController < ApplicationController
               .group(['loans.name', 'loans.cycle', 'loans.id'])
               .order('loans.created_at asc')
               .sum('payment_interest')
-    @sum_interests = WeeklyPayment
-                      .where(payment_date: month..month.end_of_month.end_of_day)
-                      .sum('payment_interest')
-    
-                      @loans = []
+
+    @loans = []
     loans.each_with_index do |loan, i|
-      @loans <<  { index: i+1, id: loan[0][2], cycle: loan[0][1], group: loan[0][0], interest: number_to_currency(loan[1].round(2), precision: 2) }
+      @loans <<  { index: i+1, id: loan[0][2], cycle: loan[0][1], group: loan[0][0], interest: loan[1].round(2) }
     end
 
     finished_loans = Loan.joins(:weekly_payments).where(state_id: 3).where('weekly_payments.payment_date': month..month.end_of_month.end_of_day).order('loans.created_at asc')
     finished_loans.each do |loan|
-      @loans << { id: loan.id, cycle: loan.cycle, group: loan.name, interest: number_to_currency(loan.weekly_payments.where('payment_date >= ?', month).sum(:payment_interest), precision: 2) }
+      @loans << { id: loan.id, cycle: loan.cycle, group: loan.name, interest: loan.weekly_payments.where('payment_date >= ?', month).sum(:payment_interest) }
     end
 
     @loans.uniq! {|e| e[:id] }
+
+    @sum_interests = @loans.map {|s| s[:interest]}.reduce(0, :+)
   end
 end
