@@ -24,7 +24,7 @@ module TableAmortization
           capital_amount: @loan.capital_amount,
           interest_amount: @loan.interest_monthly,
           period_amount: @loan.payment_amount,
-          status: payment.update_status
+          status: 'light'
         }
 
         movements << {
