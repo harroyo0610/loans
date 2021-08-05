@@ -90,4 +90,9 @@ class PersonalGroupLoansController < ApplicationController
   def last_weekly_payment
     @loan.last_weekly_payment
   end
+
+  def delete(loan)
+    loan&.loan_movement_personal_groups&.delete
+    loan&.payment_personal_groups&.delete
+  end
 end
