@@ -73,16 +73,6 @@
   </table>
 
 
-
-
-
-
-
-
-
-
-
-
 <style>
   #dttb span {
     display:none; 
@@ -95,6 +85,7 @@
     $("#dttb").dataTable({
         dom: 'Bfrtip',
         paging: false,
+        order: [[ 0, "asc" ]],
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ],

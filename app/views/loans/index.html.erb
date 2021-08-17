@@ -9,6 +9,7 @@
   <table id="dttb" class="table table-hover table-sm w-100">
     <thead>
       <tr>
+        <th>#</th>
         <th>Fecha desembolso</th>
         <th>Nombre</th>
         <th>Monto</th>
@@ -22,8 +23,11 @@
     </thead>
     <tbody>
       <% statuses = { paid: 'success', pending_pay: 'secondary', pending_accept: 'warning', not_paid: 'danger' } %>
-      <% @loans.each do |l| %>
+      <% @loans.each_with_index do |l, i| %>
         <tr class="table-<%= statuses[l.status&.to_sym] %>">
+          <td>
+            <%= i.to_i + 1 %>
+          </td>
           <td>
             <%= link_to edit_loan_path(l), class: 'nav-link' do %>
               <small><span><%= l.disbursement_date&.in_time_zone('Mexico City')&.strftime("%Y%m%d%r") %></span> <%= l.disbursement_date&.in_time_zone('Mexico City')&.strftime("%d/%m/%Y") %></small>
@@ -95,7 +99,7 @@
     $("#dttb").dataTable({
         dom: 'Bfrtip',
         paging: false,
-        order: [[ 0, "desc" ]],
+        order: [[ 0, "asc" ]],
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ],
